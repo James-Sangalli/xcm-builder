@@ -1,4 +1,4 @@
-//const { ApiPromise, WsProvider} = require("@polkadot/api");
+// const { ApiPromise, WsProvider} = require("@polkadot/api");
 const scale = require("parity-scale-codec");
 
 // function based on:
@@ -19,6 +19,9 @@ const scale = require("parity-scale-codec");
 //     return api.rpc.author.submitAndWatchExtrinsic(bytes);
 // }
 
+// TODO
+// 1. refactor code base
+// 2. figure out how to encode the call as `polkadotXcm.execute`
 function createTransferCodec() {
     const fungibleCodex = scale.object(["Fungible", scale.compactU128]);
     const parachainCodec = scale.object(["Parachain", scale.compactU32]);
