@@ -1,0 +1,92 @@
+{
+  "V2": [
+    {
+      "WithdrawAsset": [
+        {
+          "id": {
+            "Concrete": {
+              "parents": 1,
+              "interior": {
+                "X2": [
+                  {
+                    "Parachain": 3000
+                  },
+                  {
+                    "GeneralIndex": 0
+                  }
+                ]
+              }
+            }
+          },
+          "fun": {
+            "Fungible": 30000000000000
+          }
+        }
+      ]
+    },
+    {
+      "DepositReserveAsset": {
+        "assets": {
+          "Wild": "All"
+        },
+        "maxAssets": 1,
+        "dest": {
+          "parents": 1,
+          "interior": {
+            "X1": {
+              "Parachain": 2000
+            }
+          }
+        },
+        "xcm": [
+          {
+            "BuyExecution": {
+              "fees": {
+                "id": {
+                  "Concrete": {
+                    "parents": 1,
+                    "interior": {
+                      "X2": [
+                        {
+                          "Parachain": 3000
+                        },
+                        {
+                          "GeneralIndex": 0
+                        }
+                      ]
+                    }
+                  }
+                },
+                "fun": {
+                  "Fungible": 1000000000000
+                }
+              },
+              "weightLimit": {
+                "Limited": 399600000000
+              }
+            }
+          },
+          {
+            "DepositAsset": {
+              "assets": {
+                "Wild": "All"
+              },
+              "maxAssets": 1,
+              "beneficiary": {
+                "parents": 0,
+                "interior": {
+                  "X1": {
+                    "AccountId32": {
+                      "network": "Any",
+                      "id": "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
