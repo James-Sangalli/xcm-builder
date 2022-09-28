@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "capi": "^0.1.0-beta.13",
     "parity-scale-codec": "^0.5.0"
   }
 }

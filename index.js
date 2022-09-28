@@ -1,5 +1,6 @@
 // const { ApiPromise, WsProvider} = require("@polkadot/api");
 const scale = require("parity-scale-codec");
+const capi = require("capi");
 
 // function based on:
 // https://github.com/galacticcouncil/Basilisk-node/blob/532cd08b0fc5bc936e34580239b58139b1553bb0/integration-tests/src/cross_chain_transfer.rs#L159
@@ -22,6 +23,7 @@ const scale = require("parity-scale-codec");
 // TODO
 // 1. refactor code base
 // 2. figure out how to encode the call as `polkadotXcm.execute`
+// 3. make sure all the types match
 function createTransferCodec() {
     const fungibleCodex = scale.object(["Fungible", scale.compactU128]);
     const parachainCodec = scale.object(["Parachain", scale.compactU32]);
@@ -156,6 +158,11 @@ function createTransferCodec() {
     console.log("Encoded: ", encoded);
     console.log("\nHex: ",  '0x' + Buffer.from(encoded).toString('hex'));
     console.log("\nDecoded: ", decoded);
+
+    // with capi
+    // TODO include the config for Basilisk
+    const call = capi.chain(capi.Config).pallet("polkadotXcm").extrinsic("execute").call(data);
+    console.log(call);
 }
 
 // // create and register the token on testnet
