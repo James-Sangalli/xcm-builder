@@ -1,9 +1,12 @@
 const {
     ApiPromise,
-    WsProvider
+    WsProvider,
+    Keyring
 } = require("@polkadot/api");
+const { cryptoWaitReady } = require('@polkadot/util-crypto');
 const endpoint2000 = "ws://127.0.0.1:9988";
 const endpoint3000 = "ws://127.0.0.1:9999";
+const ALICE_SEED = "ALICE";
 
 // this function does a simple transfer of an asset from one parachain to another
 // https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fbasilisk-rpc.dwellir.com#/extrinsics/decode/0x34030208000400010200e12e0500000b00e057eb481b0e010004010100411f081300010200e12e050000070010a5d4e80107001c040a5d0d010004000101008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48001c040a5d000000
@@ -30,7 +33,7 @@ async function transfer(
 
     return api.tx.polkadotXcm.execute({
         V2: data.args.message.v2
-    }, data.args.max_weight).signAndSend(fromAccount);
+    }, data.args.max_weight).signAndSend(this.aliceKey);
 }
 
 /*
@@ -159,8 +162,29 @@ function getDepositReserveAssetXCM(toParachain, recipient) {
 }
 
 async function init() {
+    await cryptoWaitReady();
+    const keyring = new Keyring({ type: 'sr25519' });
+    this.aliceKey = keyring.addFromMnemonic(ALICE_SEED);
     const api = await ApiPromise.create({
-        provider: new WsProvider(endpoint3000)
+        provider: new WsProvider(endpoint3000),
+        tx: {
+            assetRegistry: {
+                setLocation: {
+                    description: 'Register an asset',
+                    params: [
+                        {
+                            name: 'assetId',
+                            type: 'u64'
+                        },
+                        {
+                            name: 'xcm',
+                            type: 'Object',
+                        }
+                    ],
+                    type: 'Void'
+                },
+            },
+        },
     });
     // https://github.com/galacticcouncil/Basilisk-node/blob/532cd08b0fc5bc936e34580239b58139b1553bb0/integration-tests/src/cross_chain_transfer.rs#L162
     // for an asset to be recognised on the other chain, it must be registered.
@@ -176,7 +200,7 @@ async function init() {
                 }
             ]
         }
-    }).signAndSend("0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48");
+    }).signAndSend(this.aliceKey);
 
     return ApiPromise.create({
         provider: new WsProvider(endpoint2000)

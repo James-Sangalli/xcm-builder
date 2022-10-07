@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@polkadot/api": "^9.4.2"
+    "@polkadot/api": "^9.4.2",
+    "@polkadot/util-crypto": "^10.1.9"
   }
 }
