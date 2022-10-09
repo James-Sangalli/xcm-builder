@@ -6,7 +6,8 @@ const {
 const { cryptoWaitReady } = require('@polkadot/util-crypto');
 const endpoint2000 = "ws://127.0.0.1:9988";
 const endpoint3000 = "ws://127.0.0.1:9999";
-const ALICE_SEED = "ALICE";
+const ALICE_SEED = "Alice";
+const BOB_SEED = "Bob";
 
 // this function does a simple transfer of an asset from one parachain to another
 // https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fbasilisk-rpc.dwellir.com#/extrinsics/decode/0x34030208000400010200e12e0500000b00e057eb481b0e010004010100411f081300010200e12e050000070010a5d4e80107001c040a5d0d010004000101008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48001c040a5d000000
@@ -171,7 +172,13 @@ async function init() {
     });
 }
 
-transfer("0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48", 3000, 2000, 30000000000000, "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48")
+transfer(
+    "0x787d6f7e9572e21656f61d3d897c343c80c81b774b1d76e5c8c72552b7ccbc25",
+    3000,
+    2000,
+    30000000000000,
+    "0x82c8cee554334c184f2ba41cb817de39714664ed84b50e9399975d62ccd12651"
+)
     .then((hash) => {
         console.log(hash);
         process.exit(0)
