@@ -165,43 +165,6 @@ async function init() {
     await cryptoWaitReady();
     const keyring = new Keyring({ type: 'sr25519' });
     this.aliceKey = keyring.addFromMnemonic(ALICE_SEED);
-    const api = await ApiPromise.create({
-        provider: new WsProvider(endpoint3000),
-        tx: {
-            assetRegistry: {
-                setLocation: {
-                    description: 'Register an asset',
-                    params: [
-                        {
-                            name: 'assetId',
-                            type: 'u64'
-                        },
-                        {
-                            name: 'xcm',
-                            type: 'Object',
-                        }
-                    ],
-                    type: 'Void'
-                },
-            },
-        },
-    });
-    // https://github.com/galacticcouncil/Basilisk-node/blob/532cd08b0fc5bc936e34580239b58139b1553bb0/integration-tests/src/cross_chain_transfer.rs#L162
-    // for an asset to be recognised on the other chain, it must be registered.
-    await api.tx.assets.create(1, this.aliceKey.address, 0);
-    // await api.tx.assetRegistry.setLocation(1, {
-    //     parents: 0,
-    //     interior: {
-    //         X2: [
-    //             {
-    //                 Parachain: 3000
-    //             },
-    //             {
-    //                 GeneralIndex: 0
-    //             }
-    //         ]
-    //     }
-    // }).signAndSend(this.aliceKey);
 
     return ApiPromise.create({
         provider: new WsProvider(endpoint2000)
